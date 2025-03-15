@@ -38,6 +38,30 @@
         ev.dataTransfer.setData("text", ev.target.id);
     }
 
+    function showAlert(message) {
+        const alertBox = document.getElementById("alerta");
+        const alertMessage = document.getElementById("alertMessage");
+        alertMessage.textContent = message;
+        alertBox.style.display = "flex";
+    }
+    
+    function closeAlert() {
+        document.getElementById("alerta").style.display = "none";
+    }
+    
+
+    // Función para seleccionar el personaje después de arrastrarlo
+function selectPlayer() {
+    if (!draggedImageId) {
+        showAlert("Debes seleccionar un personaje! ")
+        return;
+    }
+
+    // Guardar el personaje seleccionado en localStorage
+    localStorage.setItem("selectedCharacter", draggedImageId);
+
+}
+
 
 
 // Función para regresar al menú
