@@ -1,7 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+    --bg-color: black;
+    --accent-color: yellow;
+    --font-family: 'Press Start 2P', cursive;
+    --btn-bg: black;
+    --btn-border: 4px solid yellow;
+    --btn-hover-bg: yellow;
+    --btn-hover-color: black;
+    --shadow: 0 0 10px yellow;
+    --font-size-large: 25px;
+    --font-size-small: 15px;
+    --area-bg: linear-gradient(145deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7));
+}
+
 body {
-    font-family: 'Press Start 2P', cursive;
-    background-color: #000;
-    color: yellow;
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--accent-color);
     text-align: center;
     margin: 0;
     padding: 0;
@@ -15,29 +31,22 @@ body {
     width: 80%;
     height: 400px;
     display: flex;
+    font-size: var(--font-size-large);
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     padding: 30px;
     text-align: center;
     border-radius: 20px;
-    background: linear-gradient(145deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7));
+    background: var(--area-bg);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
-    display: none; /* Inicialmente oculta */
-    overflow: visible; /* Cambié esto para asegurarnos que la imagen no se oculte */
+    display: none;
     z-index: 2;
 }
 
 .drag-drop-area p {
-    font-size: 30px;
-    color: #f1c40f;
-    margin-bottom: 30px;
-}
-
-.drag-drop-content {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+    font-size: var(--font-size-small);
+    color: var(--accent-color);
     margin-bottom: 30px;
 }
 
@@ -61,20 +70,26 @@ body {
     transform: scale(1.1);
 }
 
+.drag-drop-content {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+
 .drop-zone {
     width: 300px;
-    height: 160px;
+    height: 100px;
     margin-top: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #f1c40f;
-    font-family: 'Press Start 2P', cursive;
-    position: relative;
+    color: var(--accent-color);
+    font-family: var(--font-family);
     border-radius: 15px;
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    overflow: visible; /* Esto asegura que la imagen seleccionada no sea cortada */
 }
 
 #draggedImage {
@@ -83,39 +98,40 @@ body {
     object-fit: contain;
     margin-top: 10px;
     display: block;
-    z-index: 10; /* Aseguramos que la imagen esté sobre los botones */
+    z-index: 10; 
 }
-
-.drop-zone p {
-    font-size: 20px;
-    color: #f1c40f;
-    font-family: 'Press Start 2P', cursive;
-    z-index: 1;
-}
-
 .drag-drop-area button {
-    background: black;
-    border: 4px solid yellow;
-    color: yellow;
-    font-size: 15px;
+    background: var(--btn-bg);
+    border: var(--btn-border);
+    color: var(--accent-color);
+    font-size: var(--font-size-small);
     padding: 15px 30px;
     margin: 15px;
     cursor: pointer;
-    font-family: 'Press Start 2P', cursive;
+    font-family: var(--font-family);
     text-transform: uppercase;
     letter-spacing: 2px;
-    box-shadow: 0 0 10px yellow;
+    box-shadow: var(--shadow);
     transition: transform 0.1s, background 0.3s, box-shadow 0.3s;
 }
 
 .drag-drop-area button:hover {
-    background: yellow;
-    color: black;
-    box-shadow: 0 0 20px yellow;
+    background: var(--btn-hover-bg);
+    color: var(--btn-hover-color);
+    box-shadow: 0 0 20px var(--accent-color);
     transform: scale(1.1);
 }
 
 .drag-drop-area button:active {
     transform: scale(0.95);
-    box-shadow: 0 0 5px yellow;
+    box-shadow: 0 0 5px var(--accent-color);
+}
+
+h1 {
+    
+    margin-top: 4%;
+    font-size: var(--font-size-large);
+    font-family: var(--font-family);
+    font-weight: bold;
+    text-transform: uppercase;
 }
