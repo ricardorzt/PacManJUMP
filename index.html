@@ -7,12 +7,128 @@
     <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.min.js"></script>
 
    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/dragndrop.css">
+    <link rel="stylesheet" href="../css/creditos.css"> 
+    <link rel="stylesheet" href="../css/score.css">
+    
+    <link rel="stylesheet" href="instructions.css">
+    <script defer src="../src/menu.js"></script>
+    <script defer src="../src/dragndrop.js"></script>
+    <script defer src="../src/score.js"></script>
+    <script defer src="../src/creditos.js"></script>
+    <script defer src="../src/instructions.js"></script>
 
 </head>
 <body>
 
     <div id="container"></div>
+    <canvas id="gameCanvas"></canvas>
+    <div class="menu" id="menu">
+        <img src="assets/pacmanMenu.png" alt="Pac-Man Logo" class="logo">
+        <input type="text" id="playerName" placeholder="Enter Name" maxlength="10">
+        <select id="existingNames" style="display:none;">
+            <option value="">Seleccionar un jugador ya registrado</option>
+        </select>
+        <button onclick="startGame()">Start</button>
+        <button onclick="showScore()">Score</button>
+        
+        <button onclick="showInstructions()">Instructions</button>
+        <button onclick="showCredits()">Credits</button>
+        <button onclick="exitGame()">Exit</button>
+   
+</div>
+
+    <div id="alerta" class="alerta" style="display: none;">
+        <div class="alerta-box">
+            <p id="alertMessage">¡Ingresa un nombre!</p>
+            <button onclick="closeAlert()">Aceptar</button>
+        </div>
+    </div>
+    <div class="drag-drop-area" id="dragDropArea" ondrop="drop(event)" ondragover="allowDrop(event)" style="display: none;">
+        <p>Elige un personaje</p>
+        <div class="drag-drop-content">
+            <div class="drag-drop-images">
+                <img src="assets/mspacman-yahir.png" alt="Personaje 1" id="dragPerson1" draggable="true" ondragstart="drag(event)">
+                <img src="assets/pacman-yahir.png" alt="Personaje 2" id="dragPerson2" draggable="true" ondragstart="drag(event)">
+            </div>
+        </div>
+        <div class="drop-zone">
+            <p>Arrastra aquí tu personaje</p>
+        </div>
+        <!-- Agregar un botón para seleccionar el personaje -->
+<button onclick="selectPlayer()">Seleccionar Personaje</button>
+<button onclick="goBackToMenu()">Regresar al Menú</button>
+<!-- Imagen seleccionada -->
+<img id="draggedImage" src="" style="display:none;" alt="Imagen Seleccionada">
+        
+    <div id="alerta" class="alerta" style="display: none;">
+        <div class="alerta-box">
+            <p id="alertMessage">¡Elige un personaje!</p>
+            <button onclick="closeAlert()">Aceptar</button>
+        </div>
+    </div>
+    </div>
+        <!-- Sección de instrucciones -->
+
+<div id="instructionsContainer" class="instructions-container" style="display: none;">
     
+    <!-- Nivel 1 -->
+    <div class="instructions-section">
+        <h2>Nivel 1</h2>
+        <img src="assets/nivel-1-instrucciones.png" alt="Instrucciones Nivel 1" class="instructions-image">
+        
+    </div>
+
+    <!-- Nivel 2 -->
+    <div class="instructions-section">
+        <h2>Nivel 2</h2>
+        <img src="assets/nivel-2-i.png" alt="Instrucciones Nivel 2" class="instructions-image">
+        <button onclick="closeInstructions()">Volver al menú</button>
+    </div>
+
+</div>
+
+ 
+<!-- Sección de Scores -->
+<div id="scoreSection" class="credits-section hidden">
+    <h2>Tabla de Puntajes</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha</th>
+                <th>Puntaje</th>
+            </tr>
+        </thead>
+        <tbody id="scoreTableBody"></tbody>
+    </table>
+    <button onclick="closeScore()">Volver al menú</button>
+</div>
+
+    
+<!-- Sección de créditos -->
+<div id="creditsSection" class="credits-section" style="display: none;">
+    <h2>Integrantes del equipo</h2>
+    <div class="team-members">
+        <div class="team-member">
+            <img src="assets/esteban.jpeg" alt="Integrante 1">
+            <p>Angel Esteban Esparza Muñoz</p>
+        </div>
+        <div class="team-member">
+            <img src="assets/ricardo.jpg" alt="Integrante 2">
+            <p>Ricardo Ramirez Torres</p>
+        </div>
+        <div class="team-member">
+            <img src="assets/yahir.jpg" alt="Integrante 3">
+            <p>Yahir Eduardo Tostado Nieto</p>
+        </div>
+    </div>
+    <p class="credits-footer">Tecnologías Web 6-A</p>
+    <p class="credits-footer">15/Marzo/2025</p>
+    <button onclick="closeCredits()">Volver al menú</button>
+</div>
+
 
     <script type="module" src="src/main.js"></script>
 
