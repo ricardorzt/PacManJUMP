@@ -63,8 +63,15 @@ function closeAlert() {
     document.getElementById("alerta").style.display = "none";
 }
 
+function validatePlayerName(name) {
+    const regex = /^[a-zA-Z0-9_]{4,8}$/;
+    return regex.test(name);
+}
+
 function startGame() {
-    let playerName = document.getElementById("playerName").value;
+    let playerName = document.getElementById("playerName").value.trim();
+    
+    
     if (playerName.trim() === "") {
         const selectedName = document.getElementById("existingNames").value;
         if (selectedName === "") {
@@ -73,7 +80,15 @@ function startGame() {
         }
         playerName = selectedName;
     }
-    
+
+
+    if (!validatePlayerName(playerName)) {
+        showAlert("El alias debe tener entre 4 y 8 caracteres y solo puede contener letras, dígitos y _." );
+        return;
+    }
+        
+       
+
     let players = JSON.parse(localStorage.getItem("players")) || {};
     if (!players[playerName]) {
         players[playerName] = { date: new Date().toISOString() };
@@ -91,16 +106,14 @@ function showCredits() {}
 function exitGame() {
     window.close();
 }
+
 window.onload = function() {
     const players = JSON.parse(localStorage.getItem("players")) || {};
     const existingNames = document.getElementById("existingNames");
-
-    // Limpiar opciones previas
     existingNames.innerHTML = '<option value="">Seleccionar un jugador ya registrado</option>';
-
+    
     if (Object.keys(players).length > 0) {
         existingNames.style.display = "inline-block";
-
         Object.keys(players).forEach(name => {
             const option = document.createElement("option");
             option.value = name;
@@ -108,11 +121,6 @@ window.onload = function() {
             existingNames.appendChild(option);
         });
     } else {
-        existingNames.style.display = "none"; // Ocultar si no hay jugadores
+        existingNames.style.display = "none";
     }
 };
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}yle.zIndex = "10";    // Menú en el frente
-
