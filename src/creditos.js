@@ -13,3 +13,4 @@ function closeCredits() {
     document.getElementById("menu").style.display = "flex"; // Mostrar el menú
     const canvas = document.getElementById("gameCanvas");
     canvas.style.display = "block"; }
+
