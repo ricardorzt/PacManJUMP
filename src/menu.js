@@ -74,9 +74,9 @@ function startGame() {
         playerName = selectedName;
     }
     
-    let players = JSON.parse(localStorage.getItem("players")) || [];
-    if (!players.includes(playerName)) {
-        players.push(playerName);
+    let players = JSON.parse(localStorage.getItem("players")) || {};
+    if (!players[playerName]) {
+        players[playerName] = { date: new Date().toISOString() };
         localStorage.setItem("players", JSON.stringify(players));
     }
 
@@ -91,17 +91,28 @@ function showCredits() {}
 function exitGame() {
     window.close();
 }
-
 window.onload = function() {
-    const players = JSON.parse(localStorage.getItem("players")) || [];
+    const players = JSON.parse(localStorage.getItem("players")) || {};
     const existingNames = document.getElementById("existingNames");
-    if (players.length > 0) {
+
+    // Limpiar opciones previas
+    existingNames.innerHTML = '<option value="">Seleccionar un jugador ya registrado</option>';
+
+    if (Object.keys(players).length > 0) {
         existingNames.style.display = "inline-block";
-        players.forEach(name => {
+
+        Object.keys(players).forEach(name => {
             const option = document.createElement("option");
             option.value = name;
             option.textContent = name;
             existingNames.appendChild(option);
         });
+    } else {
+        existingNames.style.display = "none"; // Ocultar si no hay jugadores
     }
 };
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}yle.zIndex = "10";    // Menú en el frente
+
