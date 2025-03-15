@@ -4,7 +4,7 @@ class Firstscene extends Phaser.Scene {
     }
 
     preload() {
-        this.text = this.add.text(200,150, 'Loading files ...', { font: '16px Courier', fill: '#ffffff' });
+        this.text = this.add.text(400,300, 'Click the screen to activate sound effects...', { font: '16px Courier', fill: '#ffffff' });
 
         this.load.image('background', '../assets/background.png');
         this.load.image('ground', '../assets/platform.png');
@@ -15,6 +15,7 @@ class Firstscene extends Phaser.Scene {
         this.load.image('ghost4', '../assets/ghost2.png');
         this.load.image('orange', '../assets/orange.png');
         this.load.image('cherry', '../assets/cherry.png');
+        this.load.image('livesIcon', '../assets/lives-icon.png');
         //this.load.spritesheet('death', '../assets/pacman-death.png', { frameWidth: 48, frameHeight: 48 });
         //this.load.spritesheet('pacman', 'assets/pacman_sprite.png', { frameWidth: 50, frameHeight: 49 });
         this.load.spritesheet('pacman', 'assets/pacman-full.png', { frameWidth: 48, frameHeight: 48 });
@@ -44,6 +45,13 @@ class Firstscene extends Phaser.Scene {
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.lives=3;
+
+        //vidas
+        const vida1=this.add.image(600, 40, 'livesIcon');
+        const vida2=this.add.image(630, 40, 'livesIcon');
+        const vida3=this.add.image(660, 40, 'livesIcon');
+        this.displayLives=[vida1, vida2,vida3];
+
 
         // Animaciones del jugador
         this.anims.create({
@@ -80,10 +88,10 @@ class Firstscene extends Phaser.Scene {
         this.loopSound.volume = 0.3;
         this.loopSound.loop = true;
         
-
-        this.startSound=this.sound.add('start');
-        this.eatSound=this.sound.add('eat');
-        this.deathSound=this.sound.add('death');
+            //background
+            this.startSound=this.sound.add('start');
+            this.eatSound=this.sound.add('eat');
+            this.deathSound=this.sound.add('death');
 
         // Crear estrellas
         this.stars = this.physics.add.group({
@@ -112,6 +120,12 @@ class Firstscene extends Phaser.Scene {
         this.gameOver = false;
         this.scoreText = this.add.bitmapText(45, 45, 'pixel', "score: 0", 20);
 
+        //timer
+        this.timerGlobal=null;
+        this.timeRemaining=0;
+        this.timerText=this.add.bitmapText(300, 45, 'pixel', "time remaining: ", 20);
+        this.timerText.setVisible(false);
+
         // Colisiones
         this.physics.add.collider(this.player, this.platforms);
         this.physics.add.collider(this.stars, this.platforms);
@@ -121,7 +135,8 @@ class Firstscene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
         this.physics.add.collider(this.player, this.special, this.collectSpecial, null, this);
 
-        
+        //timer
+
 
         this.startSound.play();
         this.loopSound.play();
@@ -151,6 +166,14 @@ class Firstscene extends Phaser.Scene {
         if (this.cursors.up.isDown && this.player.body.touching.down) {
             this.player.setVelocityY(-330);
         }
+
+        if(this.isSpecial){
+            this.timeRemaining=(this.timerGlobal.getRemainingSeconds()).toFixed(3);
+            this.timerText.setText("time remaining´: "+ this.timeRemaining);
+            this.timerText.setVisible(true);
+        }else{
+            this.timerText.setVisible(false);
+        }
     }
 
     collectStar(player, star) {
@@ -168,6 +191,10 @@ class Firstscene extends Phaser.Scene {
                 child.enableBody(true, child.x, 0, true, true);
             });
 
+            if(this.cantBombs==4){
+
+            }
+
             var x = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
             var bombKey = ['ghost', 'ghost2', 'ghost3', 'ghost4'][this.cantBombs] || 'ghost4';
 
@@ -181,40 +208,34 @@ class Firstscene extends Phaser.Scene {
         }
 
         if(((Math.floor(Math.random()*250))>200 && this.cantSpecial==0) && this.cantBombs>1){
-            var pos = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-            var specialItem= this.special.create(pos,16,'orange');
-            this.cantSpecial++;
-            this.isSpecial=true;
-
-            specialItem.setBounce(1);
-            specialItem.setCollideWorldBounds(true);
-            specialItem.setVelocity(Phaser.Math.Between(-200, 200), 20);
-            specialItem.allowGravity = false;
-
-            var timer= this.time.addEvent({
-                delay: 3000,
-                callback: ()=>{
-                    specialItem.disableBody(true, true);
-                    this.isSpecial=false;
-                }
-            });
-
-            //var elapsed = timer.getElapsedSeconds();
-            //this.specialTime=
+            this.createSpecial('orange');
         }
 
         if(((Math.floor(Math.random()*450))>430 && this.cantSpecial==1)&& this.cantBombs>=3){
-            var pos = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-            var specialItem= this.special.create(pos,16,'cherry');
-            this.cantSpecial++;
-
-            specialItem.setBounce(1);
-            specialItem.setCollideWorldBounds(true);
-            specialItem.setVelocity(Phaser.Math.Between(-200, 200), 20);
-            specialItem.allowGravity = false;
-
-
+            this.createSpecial('cherry');
         }
+    }
+
+    createSpecial(nombre){
+        var pos = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+        var specialItem= this.special.create(pos,16,nombre);
+        this.cantSpecial++;
+        this.isSpecial=true;
+
+        specialItem.setBounce(1);
+        specialItem.setCollideWorldBounds(true);
+        specialItem.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        specialItem.allowGravity = false;
+
+        var timer= this.time.addEvent({
+            delay: 8000,
+            callback: ()=>{
+                specialItem.disableBody(true, true);
+                this.isSpecial=false;
+            }
+        });
+
+        this.timerGlobal=timer;
     }
 
     collectSpecial(player, special){
@@ -223,20 +244,27 @@ class Firstscene extends Phaser.Scene {
             this.score+=30;
     }
 
-    checkwin(score){
-        /* if (this.score>=5000){
-            if(this)
-        } */
+    win(){
+        /*Ya cuando gana*/ 
 
     }
 
     hitBomb(player, bomb) {
-        this.physics.pause();
-        //player.setTint(0xff0000);
-        player.anims.play('death');
-        this.loopSound.pause();
-        this.deathSound.play();
-        this.gameOver = true;
+
+        if(this.lives==1){
+            this.physics.pause();
+            //player.setTint(0xff0000);
+            player.anims.play('death');
+            this.loopSound.pause();
+            this.deathSound.play();
+            this.gameOver = true;
+        }else{
+            this.lives--;
+            this.score-=15;
+            this.scoreText.setText("score: " + this.score);
+            this.displayLives[this.lives].destroy();
+        }
+        
     }
 }
 
